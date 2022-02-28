@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./images/favicon.png">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+  </style>
+
+  <style>
+
+    #Bill {
+      background: url('./images/icon-dollar.svg'), hsl(189, 41%, 97%);
+      background-repeat: no-repeat;
+      background-position: left 15px top 17px;
+    }
+
+    #People {
+      background: url('./images/icon-person.svg'), hsl(189, 41%, 97%);
+      background-repeat: no-repeat;
+      background-position: left 15px top 17px;
+    }
+
+  </style>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            StrongCyan: '#9EE8DF',
+            VeryDarkCyan: "hsl(183, 100%, 15%)",
+            DarkGrayishCyan: "hsl(186, 14%, 43%)",
+            LabelColor: "hsl(184, 14%, 56%)",
+            LightGrayishCyan: "hsl(185, 41%, 84%)",
+            InputBg: "hsl(189, 41%, 97%)",
+            InputColor: "#9EBBBD",
+            disabledButton: "#0D686D",
+          },
+          letterSpacing: {
+            extraWide: '0.5rem', 
+          }
+        }
+      }
+    }
+  </script>
+
+  <title> Tip Calculator App </title>
+</head>
+<body style="font-family: 'Space Mono', monospace;" class="bg-LightGrayishCyan">
+  <main class="flex flex-col items-center justify-center mt-12 lg:mt-32 lg:mb-52 ">
+    <h3 class="tracking-extraWide text-VeryDarkCyan font-bold text-xl mb-16 "> SPLI<br>TTER </h3>
+    <div class="lg:flex items-center bg-white w-full lg:w-2/3 p-8 rounded-3xl shadow-xl">
+      <form id="tip-form" class="flex flex-col lg:w-1/2 gap-3"> 
+        <div class="mb-6">
+          <div class="flex justify-between items-center lg:w-11/12">
+            <p class="text-sm text-DarkGrayishCyan font-bold mb-2"> Bill </p>
+            <p id="bill-error" class="hidden text-sm text-red-500 font-bold mb-2"> Can't be zero </p>
+          </div> 
+          <input type="text" id="Bill" placeholder="0" class="cursor-pointer py-3 px-4 w-full lg:w-11/12 focus:border-2 focus:border-StrongCyan outline-none text-right text-lg font-bold placeholder:text-InputColor text-VeryDarkCyan rounded" required>
+        </div>
+        <div class="w-full mb-6">
+          <p class="text-sm text-DarkGrayishCyan font-bold mb-4"> Select Tip % </p>
+          <div class="button-grid grid grid-rows-3 lg:grid-rows-2 grid-flow-col gap-2 lg:w-11/12 text-lg text-center text-gray-200">
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-VeryDarkCyan rounded"> <button type="button" data="5" onclick="calculate(1)" class="w-full py-3 px-7 font-bold"> 5% </button> </div>
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-VeryDarkCyan rounded"> <button type="button" data="25" onclick="calculate(2)" class="w-full py-3 px-7 font-bold"> 25% </button> </div> 
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-VeryDarkCyan rounded"> <button type="button" data="10" onclick="calculate(3)" class="w-full py-3 px-7 font-bold"> 10% </button> </div>
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-VeryDarkCyan rounded"> <button type="button" data="50" onclick="calculate(4)" class="w-full py-3 px-7 font-bold"> 50% </button> </div> 
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-VeryDarkCyan rounded"> <button type="button" data="15" onclick="calculate(5)" class="w-24 py-3 px-7 font-bold"> 15% </button> </div> 
+            <div class="transition duration-300 ease-in-out hover:bg-StrongCyan hover:text-VeryDarkCyan w-full bg-InputBg rounded"> <input type="text" id="custom" placeholder="Custom" value="" class="cursor-pointer w-24 py-3 px-2 outline-none bg-transparent text-DarkGrayishCyan font-bold text-right"> </div> 
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center w-11/12">
+            <p class="text-sm text-DarkGrayishCyan font-bold mb-2"> Number of People </p>
+            <p id="people-error" class="hidden text-sm text-red-500 font-bold mb-2"> Can't be zero </p>
+          </div>
+          <input type="number" id="People" placeholder="0" class="cursor-pointer py-3 px-4 w-full lg:w-11/12 outline-none text-right text-lg font-bold placeholder:text-InputColor text-VeryDarkCyan rounded" required>
+        </div>
+      </form>
+      <div class="counter-container flex flex-col lg:w-1/2 bg-VeryDarkCyan pt-12 pb-8 px-5 lg:px-10 rounded-2xl mt-10 lg:mt-0">
+        <div class="flex justify-between items-center mb-12">
+          <h3 class="text-gray-200 font-bold"> Tip Amount <p class="text-white opacity-50 font-normal text-xs"> / person </p> </h3>
+          <div class="relative text-4xl lg:text-5xl text-StrongCyan flex"> 
+            <h3 class="absolute -left-8 lg:-left-10"> $ </h3> 
+            <p id="per-person" class="counter" data-target=""> 0.00 </p> 
+          </div>
+        </div>
+        <div class="flex justify-between items-center">
+          <h3 class="text-gray-200 font-bold"> Total <p class="text-white opacity-50 font-normal text-xs"> / person </p> </h3>
+          <div class="relative text-4xl lg:text-5xl text-StrongCyan flex"> 
+            <h3 class="absolute -left-8 lg:-left-10"> $ </h3> 
+            <p id="total" class="counter" data-target=""> 0.00 </p> 
+          </div>
+        </div>
+        <button type="reset" id="reset" onclick="reset_form()" class="mt-24 py-3 text-VeryDarkCyan bg-StrongCyan disabled:bg-disabledButton font-bold text-lg" disabled> RESET </button>
+      </div>
+    </div>
+  </main>
+  <script src="./script.js"></script>
+</body>
+</html>
